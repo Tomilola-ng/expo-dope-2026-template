@@ -1,0 +1,88 @@
+{
+  "expo": {
+    "name": "My App",
+    "slug": "my-app-template",
+    "scheme": "myapp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icons/adaptive-icon-foreground.png",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "ios": {
+            "backgroundColor": "#FFFFFF",
+            "image": "./assets/images/splash-icon-ios.png",
+            "imageWidth": 320
+          },
+          "android": {
+            "backgroundColor": "#FFFFFF",
+            "image": "./assets/images/splash-icon-android.png",
+            "imageWidth": 320
+          }
+        }
+      ],
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "This app needs access to your photos so you can add a profile picture.",
+          "cameraPermission": "This app needs camera access so you can take profile photos."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icons/adaptive-icon-monochrome.png",
+          "color": "#111111"
+        }
+      ],
+      "@react-native-community/datetimepicker",
+      "expo-asset"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "ios": {
+      "buildNumber": "1",
+      "icon": {
+        "light": "./assets/icons/ios-icon-light.png",
+        "dark": "./assets/icons/ios-icon-dark.png",
+        "tinted": "./assets/icons/ios-icon-tinted.png"
+      },
+      "supportsTablet": true,
+      "bundleIdentifier": "com.example.myapp",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": false,
+          "NSAllowsLocalNetworking": true
+        }
+      }
+    },
+    "android": {
+      "package": "com.example.myapp",
+      "versionCode": 1,
+      "usesCleartextTraffic": false,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icons/adaptive-icon-foreground.png",
+        "backgroundImage": "./assets/icons/adaptive-icon-background.png",
+        "monochromeImage": "./assets/icons/adaptive-icon-monochrome.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/icons/favicon.png"
+    },
+    "extra": {
+      "eas": {},
+      "router": {}
+    }
+  }
+}
