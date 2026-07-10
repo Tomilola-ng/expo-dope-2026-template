@@ -96,8 +96,8 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   logoWrap: {
-    maxWidth: 360,
+    maxWidth: 200,
     width: "100%",
-    aspectRatio: 1024 / 341,
+    aspectRatio: 1,
   },
 });

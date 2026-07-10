@@ -116,9 +116,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   logo: {
-    height: 60,
-    marginLeft: -4,
-    width: 180,
+    height: 80,
+    width: 80,
   },
   logoWrap: {
     alignItems: "center",

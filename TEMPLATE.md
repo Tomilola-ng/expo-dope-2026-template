@@ -24,7 +24,7 @@ Use this list when bootstrapping a new app from this template.
 
 - [ ] `EXPO_PUBLIC_API_BASE_URL` in `.env.local` (dev)
 - [ ] Production HTTPS API URL via EAS env for release builds
-- [ ] Align auth paths with [fastapi-dope-2026-template](https://github.com/Tomilola-ng/fastapi-dope-2026-template)
+- [ ] Confirm auth API paths match your backend (override via `EXPO_PUBLIC_AUTH_*` env vars if needed)
 
 ## Product screens (placeholders in template)
 
@@ -34,5 +34,7 @@ Use this list when bootstrapping a new app from this template.
 
 ## Optional
 
+- [ ] Run AI prompts in `prompts/` (design system, spec-driven dev, Expo upgrade, native tabs)
+- [ ] Generate product specs under `spec/` — see `prompts/03-spec-driven-development.md`
 - [ ] Remove or customize telemetry (`src/utils/telemetry.ts`)
 - [ ] Update About section copy in settings (`app/(protected)/settings.tsx`)

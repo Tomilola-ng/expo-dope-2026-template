@@ -128,7 +128,7 @@ export default function VerifyEmailScreen() {
               cachePolicy="memory-disk"
               contentFit="contain"
               source={require("../../assets/images/logo.png")}
-              style={{ width: 120, height: 48 }}
+              style={{ width: 80, height: 80 }}
             />
             <AppText align="center" variant="display">
               Verify your email

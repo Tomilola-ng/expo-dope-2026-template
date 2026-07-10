@@ -1,6 +1,6 @@
 # Expo Dope 2026 — Stack
 
-Mobile template for consumer apps backed by [fastapi-dope-2026-template](https://github.com/Tomilola-ng/fastapi-dope-2026-template).
+Mobile template for consumer apps with a REST + SSE backend.
 
 ## Core
 

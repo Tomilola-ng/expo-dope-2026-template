@@ -2,15 +2,31 @@
   "name": "expo-dope-2026-template",
   "version": "1.0.0",
   "private": true,
+  "description": "Expo + React Native starter with auth, push notifications, and reusable UI.",
+  "author": "Tomilola-ng (https://github.com/Tomilola-ng)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tomilola-ng/expo-dope-2026-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Tomilola-ng/expo-dope-2026-template/issues"
+  },
+  "license": "MIT",
   "main": "expo-router/entry",
   "scripts": {
+    "setup": "npm install --legacy-peer-deps && node scripts/setup-env.mjs",
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "doctor": "npx expo-doctor"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "@expo-google-fonts/nunito-sans": "^0.4.2",
@@ -53,6 +69,7 @@
     "eslint": "^9.29.0",
     "eslint-config-expo": "~10.0.0",
     "tailwindcss": "^3.4.17",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^3.2.7"
   }
 }

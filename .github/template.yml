@@ -1,0 +1,7 @@
+name: Expo Dope 2026 Template
+description: Expo + React Native starter with auth, push notifications, settings, and reusable UI.
+labels:
+  - expo
+  - react-native
+  - template
+  - typescript
