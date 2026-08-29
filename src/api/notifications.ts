@@ -1,4 +1,4 @@
-import { apiRequest, buildApiUrl, getAuthorizationHeaders } from "@/api/client";
+import { apiRequest } from "@/api/client";
 import type {
   MarkNotificationReadResponse,
   NotificationMetadata,
@@ -58,21 +58,6 @@ export async function markNotificationAsRead(notificationId: string) {
   });
 
   return normalizeNotificationSummary(response);
-}
-
-export async function getNotificationStreamRequest(cursor?: number | null) {
-  const headers = await getAuthorizationHeaders();
-  const url = new URL(buildApiUrl("/notifications/stream"));
-
-  if (typeof cursor === "number" && Number.isFinite(cursor)) {
-    url.searchParams.set("after", String(cursor));
-    headers["Last-Event-ID"] = String(cursor);
-  }
-
-  return {
-    url: url.toString(),
-    headers,
-  };
 }
 
 export async function registerNotificationDeviceToken(payload: PushDeviceTokenPayload) {

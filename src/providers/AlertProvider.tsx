@@ -8,6 +8,8 @@ type AlertOptions = {
   message: string;
   primaryLabel?: string;
   onPrimary?: () => void;
+  secondaryLabel?: string;
+  onSecondary?: () => void;
 };
 
 type AlertState = AlertOptions & {
@@ -40,6 +42,8 @@ export function AlertProvider({ children }: PropsWithChildren) {
       message: options.message,
       primaryLabel: options.primaryLabel || "OK",
       onPrimary: options.onPrimary,
+      secondaryLabel: options.secondaryLabel,
+      onSecondary: options.onSecondary,
     });
   }, []);
 
@@ -49,6 +53,12 @@ export function AlertProvider({ children }: PropsWithChildren) {
     onPrimary?.();
   }, [alertState.onPrimary, hideAlert]);
 
+  const handleSecondary = useCallback(() => {
+    const onSecondary = alertState.onSecondary;
+    hideAlert();
+    onSecondary?.();
+  }, [alertState.onSecondary, hideAlert]);
+
   const value = useMemo(
     () => ({
       showAlert,
@@ -57,26 +67,49 @@ export function AlertProvider({ children }: PropsWithChildren) {
     [hideAlert, showAlert],
   );
 
+  // Two-choice alerts (e.g. push Enable / Not now) must not dismiss on backdrop —
+  // outside tap previously skipped onSecondary and left permission unresolved.
+  const requireExplicitChoice = Boolean(alertState.secondaryLabel);
+
   return (
     <AlertContext.Provider value={value}>
       {children}
       <Modal
         animationType="fade"
-        onRequestClose={hideAlert}
+        onRequestClose={
+          requireExplicitChoice
+            ? () => {
+                /* Require Enable / Not now — do not dismiss silently. */
+              }
+            : hideAlert
+        }
         transparent
         visible={alertState.visible}
       >
         <View className="flex-1 items-center justify-center bg-black/45 px-6">
-          <Pressable className="absolute inset-0" onPress={hideAlert} />
+          {requireExplicitChoice ? (
+            <View className="absolute inset-0" />
+          ) : (
+            <Pressable className="absolute inset-0" onPress={hideAlert} />
+          )}
           <View className="w-full max-w-md gap-4 rounded-2xl bg-white p-5">
             <View className="gap-2">
               <AppText variant="h3">{alertState.title}</AppText>
               <AppText color="secondary">{alertState.message}</AppText>
             </View>
-            <AppButton
-              label={alertState.primaryLabel || "OK"}
-              onPress={handlePrimary}
-            />
+            <View className="gap-2">
+              <AppButton
+                label={alertState.primaryLabel || "OK"}
+                onPress={handlePrimary}
+              />
+              {alertState.secondaryLabel ? (
+                <AppButton
+                  label={alertState.secondaryLabel}
+                  onPress={handleSecondary}
+                  variant="secondary"
+                />
+              ) : null}
+            </View>
           </View>
         </View>
       </Modal>

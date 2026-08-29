@@ -2,6 +2,48 @@ import * as Application from "expo-application";
 import * as Device from "expo-device";
 import { Platform } from "react-native";
 import { getApiConfig } from "@/api/config";
+import { reportClientError } from "@/services/client-error-log";
+
+/** Dev-only diagnostic breadcrumb — never show to users. */
+export function logDiagnostic(message: string, payload?: unknown): void {
+  if (!__DEV__) {
+    return;
+  }
+  if (payload === undefined) {
+    console.log(`[diagnostic] ${message}`);
+    return;
+  }
+  console.log(`[diagnostic] ${message}`, payload);
+}
+
+/**
+ * Unexpected failure path: diagnostic log + optional ops report.
+ * Never surfaces eng details to the UI — callers show UNEXPECTED_ERROR copy.
+ */
+export function reportUnexpectedFailure(
+  code: string,
+  error: unknown,
+  context?: {
+    flow?: string;
+    screen?: string;
+    metadata?: Record<string, unknown>;
+  },
+): void {
+  const message = error instanceof Error ? error.message : String(error);
+  const { flow, screen, metadata, ...metadataRest } = context ?? {};
+  logDiagnostic(code, { message, flow, screen, ...metadataRest, ...metadata });
+  reportClientError({
+    message: `${code}: ${message}`.slice(0, 4000),
+    flow,
+    screen,
+    stack: error instanceof Error ? error.stack : undefined,
+    metadata: {
+      code,
+      ...(metadata ?? {}),
+      ...metadataRest,
+    },
+  });
+}
 
 export async function trackAppLaunch() {
   try {

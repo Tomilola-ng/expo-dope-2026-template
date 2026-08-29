@@ -7,7 +7,7 @@ Use this list when bootstrapping a new app from this template.
 - [ ] App name, slug, and URL scheme (`app.json`)
 - [ ] Android package name and iOS bundle identifier (`app.json`)
 - [ ] `package.json` name (if publishing as a separate repo)
-- [ ] EAS project — run `eas init` and set `extra.eas.projectId` in `app.json`
+- [ ] EAS project — run `eas init` and set `extra.eas.projectId` + `updates.url` in `app.json`
 
 ## Assets & branding
 
@@ -26,6 +26,23 @@ Use this list when bootstrapping a new app from this template.
 - [ ] Production HTTPS API URL via EAS env for release builds
 - [ ] Confirm auth API paths match your backend (override via `EXPO_PUBLIC_AUTH_*` env vars if needed)
 
+## Optional — social auth
+
+- [ ] Google: `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` (+ iOS client id) and `iosUrlScheme` in `app.json`
+- [ ] Apple: enable Sign in with Apple capability on the iOS App ID (plugin already listed)
+- [ ] Confirm backend `POST /auth/apple/token` and `/auth/google/token` (or override paths)
+
+## Optional — billing
+
+- [ ] RevenueCat public SDK keys in env (`EXPO_PUBLIC_REVENUECAT_*_API_KEY`)
+- [ ] Bind RC app-user id after login (`loginRevenueCatUser`) — see `docs/BILLING.md`
+- [ ] Native build before real store purchases (not Expo Go alone)
+
+## Optional — OTA
+
+- [ ] Confirm `runtimeVersion` + `updates.url` after `eas init`
+- [ ] Prefer `eas update` for JS/asset fixes after an updates-capable binary is installed
+
 ## Product screens (placeholders in template)
 
 - [ ] Onboarding copy and images (`app/(public)/onboarding.tsx`)
@@ -34,7 +51,7 @@ Use this list when bootstrapping a new app from this template.
 
 ## Optional
 
-- [ ] Run AI prompts in `prompts/` (design system, spec-driven dev, Expo upgrade, native tabs)
+- [ ] Run AI prompts in `prompts/` (design system, spec-driven dev, Expo upgrade, revert native tabs)
 - [ ] Generate product specs under `spec/` — see `prompts/03-spec-driven-development.md`
-- [ ] Remove or customize telemetry (`src/utils/telemetry.ts`)
+- [ ] Remove or customize telemetry / client-error reporting
 - [ ] Update About section copy in settings (`app/(protected)/settings.tsx`)

@@ -8,6 +8,8 @@ import type {
   RegisterPayload,
   VerificationOtpPayload,
 } from "@/api/types";
+import type { AppleTokenPayload } from "@/features/auth/apple-sign-in";
+import type { GoogleTokenPayload } from "@/features/auth/google-sign-in";
 
 function normalizeAuthUser(user: Partial<AuthUser> & { email: string; id: string }): AuthUser {
   const derivedFullName =
@@ -48,6 +50,36 @@ export async function login(payload: LoginPayload) {
   const response = await apiRequest<LoginResponse>({
     method: "POST",
     path: authPaths.login,
+    body: payload,
+  });
+
+  return {
+    ...response,
+    user: normalizeAuthUser(response.user),
+  };
+}
+
+export async function loginWithAppleToken(payload: AppleTokenPayload) {
+  const { authPaths } = getApiConfig();
+
+  const response = await apiRequest<LoginResponse>({
+    method: "POST",
+    path: authPaths.appleToken,
+    body: payload,
+  });
+
+  return {
+    ...response,
+    user: normalizeAuthUser(response.user),
+  };
+}
+
+export async function loginWithGoogleToken(payload: GoogleTokenPayload) {
+  const { authPaths } = getApiConfig();
+
+  const response = await apiRequest<LoginResponse>({
+    method: "POST",
+    path: authPaths.googleToken,
     body: payload,
   });
 

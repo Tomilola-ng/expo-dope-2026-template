@@ -76,6 +76,8 @@ export type AuthTokens = {
 
 export type LoginResponse = AuthTokens & {
   user: AuthUser;
+  /** True when the social/email flow created a new account. */
+  created?: boolean;
 };
 
 export type LoginPayload = {
@@ -237,12 +239,4 @@ export type PushDeviceTokenRecord = {
   platform: PushDevicePlatform;
   created_at?: string | null;
   updated_at?: string | null;
-};
-
-export type NotificationStreamPayload = {
-  sequence?: number;
-  sequence_id?: number;
-  notification?: NotificationSummary | null;
-  type?: string;
-  heartbeat?: boolean;
 };

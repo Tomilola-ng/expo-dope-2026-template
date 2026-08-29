@@ -1,19 +1,22 @@
 # Expo Dope 2026 — Stack
 
-Mobile template for consumer apps with a REST + SSE backend.
+Mobile template for consumer apps with a REST backend (push + poll for inbox live updates).
 
 ## Core
 
-| Layer        | Choice                                           |
-| ------------ | ------------------------------------------------ |
-| Framework    | Expo SDK 54, React Native 0.81                   |
-| Navigation   | Expo Router (file-based)                         |
-| Styling      | NativeWind 4 + Tailwind CSS                      |
-| Server state | TanStack Query 5                                 |
-| HTTP         | `fetch` via `src/api/client.ts`                  |
-| Auth storage | `expo-secure-store`                              |
-| Push         | `expo-notifications` + device token registration |
-| Realtime     | SSE (`react-native-sse`) for notification stream |
+| Layer        | Choice                                                         |
+| ------------ | -------------------------------------------------------------- |
+| Framework    | Expo SDK 54, React Native 0.81                                 |
+| Navigation   | Expo Router (file-based) + native tabs                         |
+| Styling      | NativeWind 4 + Tailwind CSS + optional Liquid Glass chrome     |
+| Server state | TanStack Query 5                                               |
+| HTTP         | `fetch` via `src/api/client.ts`                                |
+| Auth storage | `expo-secure-store`                                            |
+| Social auth  | Apple (`expo-apple-authentication`) + Google (native module)   |
+| Push         | `expo-notifications` + device token registration               |
+| Inbox live   | Poll on foreground + push (no SSE by default)                  |
+| Billing      | RevenueCat SDK scaffold (`react-native-purchases`)             |
+| OTA          | `expo-updates` + EAS Update channels                           |
 
 ## Typography
 
@@ -32,12 +35,13 @@ See `docs/FONTS.md` for Android release notes.
 | Android package | `com.example.myapp` |
 | iOS bundle ID   | `com.example.myapp` |
 
-Run `eas init` before production push notification builds.
+Run `eas init` before production push notification / OTA builds.
 
 ## Included flows
 
-- Public: onboarding, sign-up, login, email verification, forgot/reset password
+- Public: onboarding, sign-up, login (email + social), email verification, forgot/reset password
 - Protected tabs: Home (placeholder), Account
 - Profile edit, settings (password, notifications, delete account)
-- Notification inbox with push permission prompt
+- Notification inbox with push permission prompt (soft dismiss)
 - Public read-only account profile
+- Billing unavailable UI when RevenueCat keys are missing

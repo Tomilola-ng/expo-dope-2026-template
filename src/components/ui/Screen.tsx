@@ -8,7 +8,10 @@ import {
   type RefreshControlProps,
   type ViewProps,
 } from "react-native";
-import { KeyboardAvoidingView, KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import {
+  KeyboardAvoidingView,
+  KeyboardAwareScrollView,
+} from "react-native-keyboard-controller";
 import { SafeAreaView, type Edge } from "react-native-safe-area-context";
 
 type ScreenProps = PropsWithChildren<
@@ -18,6 +21,8 @@ type ScreenProps = PropsWithChildren<
     refreshControl?: ReactElement<RefreshControlProps>;
     contentClassName?: string;
     safeEdges?: Edge[];
+    /** Extra space above the keyboard for focused fields (KeyboardAwareScrollView). */
+    keyboardBottomOffset?: number;
   }
 >;
 
@@ -29,6 +34,7 @@ export function Screen({
   className,
   contentClassName,
   safeEdges = ["top", "left", "right", "bottom"],
+  keyboardBottomOffset = 88,
   style,
   ...props
 }: ScreenProps) {
@@ -37,12 +43,12 @@ export function Screen({
   if (keyboardAware && scroll) {
     content = (
       <KeyboardAwareScrollView
+        bottomOffset={keyboardBottomOffset}
         className="flex-1"
         contentContainerClassName={cn("px-3", contentClassName)}
-        refreshControl={refreshControl}
         keyboardShouldPersistTaps="handled"
+        refreshControl={refreshControl}
         showsVerticalScrollIndicator={false}
-        bottomOffset={60}
       >
         {children}
       </KeyboardAwareScrollView>
@@ -52,8 +58,8 @@ export function Screen({
       <ScrollView
         className="flex-1"
         contentContainerClassName={cn("px-3", contentClassName)}
-        refreshControl={refreshControl}
         keyboardShouldPersistTaps="handled"
+        refreshControl={refreshControl}
         showsVerticalScrollIndicator={false}
       >
         {children}
@@ -62,8 +68,9 @@ export function Screen({
   } else if (keyboardAware) {
     content = (
       <KeyboardAvoidingView
-        className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className="flex-1"
+        keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
       >
         <View className={cn("flex-1 px-3", contentClassName)}>
           {children}

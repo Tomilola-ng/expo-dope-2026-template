@@ -1,4 +1,5 @@
 import { ApiError, formatRateLimitMessage } from "@/api/errors";
+import { SocialAuthRow } from "@/components/auth/SocialAuthRow";
 import { AppButton } from "@/components/ui/AppButton";
 import { AppInput } from "@/components/ui/AppInput";
 import { PasswordInput } from "@/components/ui/PasswordInput";
@@ -133,6 +134,7 @@ export default function SignUpScreen() {
           loading={isSubmitting}
           onPress={() => void submit()}
         />
+        <SocialAuthRow disabled={isSubmitting} />
         <View className="flex-row items-center justify-center gap-1">
           <AppText color="secondary" variant="bodySmall">
             Already have an account?

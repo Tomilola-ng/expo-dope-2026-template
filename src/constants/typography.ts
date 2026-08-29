@@ -88,4 +88,7 @@ export const typography = {
   } satisfies Record<TypographyVariant, VariantStyle>,
 } as const;
 
+/** Cap Dynamic Type growth so dense chrome (search bars, chips) stays usable. */
+export const MAX_FONT_SIZE_MULTIPLIER = 1.2;
+
 export type { TypographyVariant };

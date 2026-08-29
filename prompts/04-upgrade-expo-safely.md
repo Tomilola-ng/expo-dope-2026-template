@@ -33,7 +33,7 @@ Goal: upgrade this project to the latest compatible Expo SDK safely, with minima
 
 ## Constraints
 - Keep `--legacy-peer-deps` if the repo already uses it for install/CI.
-- Do not remove features (auth, notifications SSE, push) unless the SDK forces a replacement.
+- Do not remove features (auth, notifications poll/push, social auth, RevenueCat scaffold) unless the SDK forces a replacement.
 - Do not upgrade unrelated libraries (TanStack Query, NativeWind) unless required for compatibility.
 - If a dependency has no SDK-compatible release, stop and list blockers instead of pinning random versions.
 

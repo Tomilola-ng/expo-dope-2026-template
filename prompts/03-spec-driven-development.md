@@ -14,7 +14,7 @@ Treat ambiguity as a bug in the planning phase, not a surprise in production.
 Different readers need different truths — do not put everything in one giant README.
 
 ## What already exists in this repo
-- `spec/STACK.md` — living stack overview (Expo 54, NativeWind, TanStack Query, secure-store auth, SSE notifications)
+- `spec/STACK.md` — living stack overview (Expo 54, NativeWind, TanStack Query, secure-store auth, push + poll notifications)
 - `TEMPLATE.md` — bootstrap checklist (identity, assets, backend env, placeholders)
 - `docs/FONTS.md` — Android font bundling notes
 - Implemented template flows: onboarding, auth (register/login/OTP/reset), protected tabs (Home + Account), profile edit, settings, notification inbox, push token lifecycle
@@ -52,7 +52,7 @@ Align with existing `src/api/types.ts` where endpoints already exist; flag gaps.
 Examples: ownership roles, block behavior, feed ranking philosophy, admin boundaries, notification `action_url` routing rules.
 
 ### 5. `spec/PROJECT_OVERVIEW.md` — what the repo actually does today
-Living doc: navigation map, providers, cache keys, secure storage keys, push/SSE behavior. Update as code evolves.
+Living doc: navigation map, providers, cache keys, secure storage keys, push/poll behavior. Update as code evolves.
 
 ### 6. `spec/tasks/` — executable slices
 Create numbered task files, e.g.:
@@ -68,7 +68,7 @@ APP_NAME:
 ONE_LINE_PITCH:
 V1_GOALS:
 V1_NON_GOALS:
-BACKEND_BASE_URL_PATTERN: (e.g. REST + SSE at /api/v1)
+BACKEND_BASE_URL_PATTERN: (e.g. REST + push at /api/v1)
 KEY_SCREENS:
 
 ## Rules for writing specs

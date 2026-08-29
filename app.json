@@ -7,6 +7,14 @@
     "orientation": "portrait",
     "icon": "./assets/icons/adaptive-icon-foreground.png",
     "userInterfaceStyle": "light",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/OWNER_TO_CONFIRM_EAS_PROJECT_ID",
+      "fallbackToCacheTimeout": 0,
+      "checkAutomatically": "ON_LOAD"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -27,6 +35,7 @@
           }
         }
       ],
+      "expo-apple-authentication",
       "expo-secure-store",
       [
         "expo-image-picker",
@@ -43,7 +52,14 @@
         }
       ],
       "@react-native-community/datetimepicker",
-      "expo-asset"
+      "expo-asset",
+      "expo-updates",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.OWNER_TO_CONFIRM_IOS_CLIENT_ID"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
@@ -57,6 +73,7 @@
       },
       "supportsTablet": true,
       "bundleIdentifier": "com.example.myapp",
+      "usesAppleSignIn": true,
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSAppTransportSecurity": {
@@ -81,7 +98,9 @@
       "favicon": "./assets/icons/favicon.png"
     },
     "extra": {
-      "eas": {},
+      "eas": {
+        "projectId": "OWNER_TO_CONFIRM_EAS_PROJECT_ID"
+      },
       "router": {}
     }
   }

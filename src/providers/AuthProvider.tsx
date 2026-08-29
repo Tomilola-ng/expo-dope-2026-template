@@ -3,15 +3,20 @@ import { ApiError } from "@/api/errors";
 import {
   getCurrentUser,
   login as loginRequest,
+  loginWithAppleToken as loginWithAppleTokenRequest,
+  loginWithGoogleToken as loginWithGoogleTokenRequest,
   logoutRequest,
   register as registerRequest,
 } from "@/api/auth";
 import type {
   AuthUser,
   LoginPayload,
+  LoginResponse,
   RegisterPayload,
   UserProfile,
 } from "@/api/types";
+import type { AppleTokenPayload } from "@/features/auth/apple-sign-in";
+import type { GoogleTokenPayload } from "@/features/auth/google-sign-in";
 import { setUnauthorizedHandler } from "@/api/client";
 import { unregisterPushDeviceToken } from "@/services/push-token-lifecycle";
 import {
@@ -41,6 +46,8 @@ type AuthContextValue = {
   isInitializing: boolean;
   authNotice: string | null;
   login: (payload: LoginPayload) => Promise<void>;
+  loginWithApple: (payload: AppleTokenPayload) => Promise<LoginResponse>;
+  loginWithGoogle: (payload: GoogleTokenPayload) => Promise<LoginResponse>;
   register: (payload: RegisterPayload) => Promise<void>;
   logout: () => Promise<void>;
   signOut: (notice?: string) => Promise<void>;
@@ -139,6 +146,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
       }
 
       void unregisterPushDeviceToken();
+      void import("@/services/revenuecat").then(({ logoutRevenueCatUser }) =>
+        logoutRevenueCatUser(),
+      );
 
       if (options?.navigate) {
         router.replace({
@@ -215,9 +225,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
     });
   }, [signOut]);
 
-  const login = useCallback(
-    async (payload: LoginPayload) => {
-      const response = await loginRequest(payload);
+  const applyAuthenticatedSession = useCallback(
+    async (response: LoginResponse) => {
       await saveTokens(
         response.access || response.access_token || "",
         response.refresh || response.refresh_token,
@@ -228,6 +237,32 @@ export function AuthProvider({ children }: PropsWithChildren) {
       setAuthNotice(null);
     },
     [queryClient],
+  );
+
+  const login = useCallback(
+    async (payload: LoginPayload) => {
+      const response = await loginRequest(payload);
+      await applyAuthenticatedSession(response);
+    },
+    [applyAuthenticatedSession],
+  );
+
+  const loginWithApple = useCallback(
+    async (payload: AppleTokenPayload) => {
+      const response = await loginWithAppleTokenRequest(payload);
+      await applyAuthenticatedSession(response);
+      return response;
+    },
+    [applyAuthenticatedSession],
+  );
+
+  const loginWithGoogle = useCallback(
+    async (payload: GoogleTokenPayload) => {
+      const response = await loginWithGoogleTokenRequest(payload);
+      await applyAuthenticatedSession(response);
+      return response;
+    },
+    [applyAuthenticatedSession],
   );
 
   const register = useCallback(
@@ -275,6 +310,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
       isInitializing: status === "initializing",
       authNotice,
       login,
+      loginWithApple,
+      loginWithGoogle,
       register,
       logout,
       signOut,
@@ -291,7 +328,18 @@ export function AuthProvider({ children }: PropsWithChildren) {
         ),
       refreshCurrentUser,
     }),
-    [authNotice, login, logout, refreshCurrentUser, register, signOut, status, user],
+    [
+      authNotice,
+      login,
+      loginWithApple,
+      loginWithGoogle,
+      logout,
+      refreshCurrentUser,
+      register,
+      signOut,
+      status,
+      user,
+    ],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

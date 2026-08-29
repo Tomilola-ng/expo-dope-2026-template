@@ -4,8 +4,34 @@
     "appVersionSource": "remote"
   },
   "build": {
-    "preview": {
+    "base": {
+      "channel": "development"
+    },
+    "development": {
+      "extends": "base",
+      "developmentClient": true,
       "distribution": "internal",
+      "channel": "development",
+      "ios": {
+        "simulator": false
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "development-simulator": {
+      "extends": "base",
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "development",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "preview": {
+      "extends": "base",
+      "distribution": "internal",
+      "channel": "preview",
       "ios": {
         "simulator": false
       },
@@ -14,6 +40,8 @@
       }
     },
     "production": {
+      "extends": "base",
+      "channel": "production",
       "autoIncrement": true,
       "android": {
         "buildType": "app-bundle"

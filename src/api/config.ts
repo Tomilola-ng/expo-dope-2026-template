@@ -94,6 +94,12 @@ export function getApiConfig() {
     authPaths: {
       register: ensureLeadingSlash(process.env.EXPO_PUBLIC_AUTH_REGISTER_PATH?.trim() || "/auth/register"),
       login: ensureLeadingSlash(process.env.EXPO_PUBLIC_AUTH_LOGIN_PATH?.trim() || "/auth/login"),
+      appleToken: ensureLeadingSlash(
+        process.env.EXPO_PUBLIC_AUTH_APPLE_TOKEN_PATH?.trim() || "/auth/apple/token",
+      ),
+      googleToken: ensureLeadingSlash(
+        process.env.EXPO_PUBLIC_AUTH_GOOGLE_TOKEN_PATH?.trim() || "/auth/google/token",
+      ),
       sendOtp: ensureLeadingSlash(process.env.EXPO_PUBLIC_AUTH_SEND_OTP_PATH?.trim() || "/auth/send-otp"),
       verifyOtp: ensureLeadingSlash(process.env.EXPO_PUBLIC_AUTH_VERIFY_OTP_PATH?.trim() || "/auth/verify-otp"),
       me: ensureLeadingSlash(process.env.EXPO_PUBLIC_AUTH_ME_PATH?.trim() || "/auth/me"),

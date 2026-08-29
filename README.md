@@ -15,7 +15,7 @@
 
 </div>
 
-A slim Expo + React Native starter for consumer mobile apps — auth, push notifications, notification inbox, account profile, settings, and reusable UI primitives out of the box.
+A slim Expo + React Native starter for consumer mobile apps — auth (email + Apple/Google), push notifications, notification inbox, account profile, settings, RevenueCat anticipation, native tabs / glass chrome, and reusable UI primitives out of the box.
 
 ## Get started
 
@@ -35,7 +35,7 @@ Or click **Use this template** on GitHub to create a new repo, then clone your c
 npx expo start
 ```
 
-On first launch the app shows splash → onboarding → sign-up or login → protected tabs (Home + Account). Use Expo Go or a simulator; for push notifications in production, run `eas init` and set `extra.eas.projectId` in `app.json`.
+On first launch the app shows splash → onboarding → sign-up or login → protected tabs (Home + Account). Use Expo Go for most UI work; Apple/Google Sign-In, RevenueCat, liquid glass, and push need a **development build** (`npm run start:dev-client` after `eas build` / `expo run:*`). For push + OTA, run `eas init` and set `extra.eas.projectId` plus `updates.url` in `app.json`.
 
 ## Customize for your app
 
@@ -48,7 +48,7 @@ On first launch the app shows splash → onboarding → sign-up or login → pro
 
 ## AI prompts
 
-Copy-paste prompts for Cursor, Copilot, or any coding agent live in [`prompts/`](prompts/). They cover design-system customization, spec-driven development, safe Expo upgrades, and optional iOS native glass tabs.
+Copy-paste prompts for Cursor, Copilot, or any coding agent live in [`prompts/`](prompts/). They cover design-system customization, spec-driven development, safe Expo upgrades, and native-tabs revert/re-enable.
 
 | Prompt | When to use |
 | ------ | ----------- |
@@ -56,19 +56,23 @@ Copy-paste prompts for Cursor, Copilot, or any coding agent live in [`prompts/`]
 | [02 — Build a design system](prompts/02-build-design-system.md) | Start from scratch before theming the app |
 | [03 — Spec-driven development](prompts/03-spec-driven-development.md) | Write specs before features (the workflow behind this template) |
 | [04 — Upgrade Expo safely](prompts/04-upgrade-expo-safely.md) | Bump SDK / dependencies without breaking native modules |
-| [05 — iOS glass native tabs](prompts/05-ios-glass-native-tabs.md) | Enable or remove Expo's experimental native tabs |
+| [05 — Native tabs](prompts/05-ios-glass-native-tabs.md) | Revert to JS tabs or re-enable native tabs |
+
+Also see `docs/NATIVE_TABS.md` and `docs/BILLING.md`.
 
 ## Scripts
 
 | Command                           | Description                              |
 | --------------------------------- | ---------------------------------------- |
 | `npm run setup`                   | Install deps + create `.env.local`       |
-| `npm start`                       | Start Expo dev server                    |
+| `npm start`                       | Start Expo Go                            |
+| `npm run start:dev-client`        | Start with a development client          |
 | `npm run typecheck`               | TypeScript check                         |
 | `npm run lint`                    | ESLint                                   |
 | `npm run test`                    | Unit tests (Vitest)                      |
 | `npm run doctor`                  | Run `expo-doctor` health checks          |
 | `npm run ios` / `npm run android` | Native run                               |
+| `npm run update:preview`          | EAS Update on preview channel            |
 
 ## Stack
 
