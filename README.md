@@ -15,7 +15,7 @@
 
 </div>
 
-A slim Expo + React Native starter for consumer mobile apps — auth (email + Apple/Google), push notifications, notification inbox, account profile, settings, RevenueCat anticipation, native tabs / glass chrome, and reusable UI primitives out of the box.
+A production Expo + React Native starter for authenticated mobile products. It includes email/password and Apple/Google auth, verification and password recovery, secure sessions with refresh/offline-safe hydration, push notifications, notification preferences, profile and account deletion flows, RevenueCat scaffolding, OTA updates, error handling, Store Review, and reusable UI/form primitives.
 
 ## Get started
 
@@ -58,7 +58,17 @@ Copy-paste prompts for Cursor, Copilot, or any coding agent live in [`prompts/`]
 | [04 — Upgrade Expo safely](prompts/04-upgrade-expo-safely.md) | Bump SDK / dependencies without breaking native modules |
 | [05 — Native tabs](prompts/05-ios-glass-native-tabs.md) | Revert to JS tabs or re-enable native tabs |
 
-Also see `docs/NATIVE_TABS.md` and `docs/BILLING.md`.
+Also see `docs/NATIVE_TABS.md`, `docs/BILLING.md`, and `docs/APP_REVIEW_AND_UPDATES.md`.
+
+## Production behavior
+
+- Auth tokens remain in SecureStore. A network outage during launch does not erase a valid local session; only a confirmed 401/invalid-token response signs the user out.
+- The API client has request timeouts and one single-flight refresh/retry cycle for concurrent 401 responses.
+- `AppErrorBoundary` and the global JS handler feed the existing client-error reporting hook.
+- Store Review is available through `canRequestAppReview` / `requestAppReview`, including a persisted anti-spam cooldown and a Settings action.
+- A force-update check is opt-in through `EXPO_PUBLIC_UPDATE_POLICY_PATH`; without that variable the app makes no update-policy request.
+
+This is deliberately not a game starter. Game identity, ads, game feel, SFX, rounds, rooms, and progression belong in Game Dope.
 
 ## Scripts
 

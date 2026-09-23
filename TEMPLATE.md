@@ -25,6 +25,7 @@ Use this list when bootstrapping a new app from this template.
 - [ ] `EXPO_PUBLIC_API_BASE_URL` in `.env.local` (dev)
 - [ ] Production HTTPS API URL via EAS env for release builds
 - [ ] Confirm auth API paths match your backend (override via `EXPO_PUBLIC_AUTH_*` env vars if needed)
+- [ ] Confirm refresh-token response shape (`access`/`access_token`, optional rotated refresh token)
 
 ## Optional — social auth
 
@@ -42,6 +43,13 @@ Use this list when bootstrapping a new app from this template.
 
 - [ ] Confirm `runtimeVersion` + `updates.url` after `eas init`
 - [ ] Prefer `eas update` for JS/asset fixes after an updates-capable binary is installed
+
+## Optional — reviews and minimum versions
+
+- [ ] Keep or remove the “Rate this app” Settings action
+- [ ] Choose a product-appropriate review trigger; `requestAppReview` defaults to a 90-day cooldown
+- [ ] Set `EXPO_PUBLIC_UPDATE_POLICY_PATH` only when your backend implements the documented policy shape
+- [ ] Supply valid App Store / Play Store URLs from the update-policy response
 
 ## Product screens (placeholders in template)
 
