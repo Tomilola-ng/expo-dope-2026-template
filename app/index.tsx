@@ -2,6 +2,7 @@ import { ErrorState } from "@/components/states/ErrorState";
 import { Screen } from "@/components/ui/Screen";
 import { getApiConfig } from "@/api/config";
 import { useAuth } from "@/providers/AuthProvider";
+import { checkAppUpdatePolicy } from "@/services/app-update";
 import { Image } from "expo-image";
 import { router } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -47,6 +48,13 @@ export default function IndexScreen() {
       router.replace(
         isAuthenticated ? "/(protected)/(tabs)" : "/(public)/onboarding",
       );
+      void checkAppUpdatePolicy()
+        .then((policy) => {
+          if (policy) router.replace("/update-required");
+        })
+        .catch((error) => {
+          if (__DEV__) console.warn("Update policy check skipped", error);
+        });
     }, REDIRECT_DELAY_MS);
 
     return () => clearTimeout(timeout);
