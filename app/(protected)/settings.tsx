@@ -10,6 +10,7 @@ import { Screen } from "@/components/ui/Screen";
 import { ScreenHeader } from "@/components/ui/ScreenHeader";
 import { useAccountSettings } from "@/hooks/useSettings";
 import { useAuth } from "@/providers/AuthProvider";
+import { requestAppReview } from "@/services/app-review";
 import Constants from "expo-constants";
 import { router } from "expo-router";
 import { Alert, RefreshControl, View } from "react-native";
@@ -97,6 +98,17 @@ export default function SettingsScreen() {
           label="Notification preferences"
           onPress={() => router.push("/(protected)/settings/notifications")}
           subtitle={settings.push_enabled ? "Push on" : "Push off"}
+        />
+      </SettingsSection>
+
+      <SettingsSectionDivider />
+
+      <SettingsSection title="Support">
+        <SettingsItem
+          icon="star-outline"
+          label="Rate this app"
+          onPress={() => void requestAppReview({ ignoreCooldown: true })}
+          subtitle="Share feedback in the app store"
         />
       </SettingsSection>
 
