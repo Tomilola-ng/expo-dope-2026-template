@@ -60,13 +60,41 @@ type AuthContextValue = {
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 const LOGOUT_REQUEST_TIMEOUT_MS = 8000;
+const HYDRATE_REQUEST_TIMEOUT_MS = 8000;
+
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number) {
+  return new Promise<T>((resolve, reject) => {
+    const timeout = setTimeout(
+      () => reject(new Error("auth_hydration_timeout")),
+      timeoutMs,
+    );
+    promise.then(
+      (value) => {
+        clearTimeout(timeout);
+        resolve(value);
+      },
+      (error) => {
+        clearTimeout(timeout);
+        reject(error);
+      },
+    );
+  });
+}
+
+function isTransientAuthError(error: unknown) {
+  return (
+    error instanceof ApiError &&
+    (error.code === "network" || error.code === "config" || error.status === 0)
+  );
+}
 
 function isInvalidSessionError(error: unknown) {
   if (error instanceof ApiError) {
+    if (isTransientAuthError(error)) return false;
     return (
       error.status === 401 ||
-      error.status === 403 ||
-      /invalid token|token expired|unauthorized|forbidden/i.test(error.message)
+      error.apiCode === "invalid_token" ||
+      /invalid token|token expired|session expired or revoked/i.test(error.message)
     );
   }
 
@@ -79,6 +107,10 @@ function isInvalidSessionError(error: unknown) {
       "code" in error && typeof error.code === "string"
         ? error.code
         : undefined;
+    const apiCode =
+      "apiCode" in error && typeof error.apiCode === "string"
+        ? error.apiCode
+        : undefined;
     const message =
       "message" in error && typeof error.message === "string"
         ? error.message
@@ -86,15 +118,9 @@ function isInvalidSessionError(error: unknown) {
 
     return (
       status === 401 ||
-      status === 403 ||
+      apiCode === "invalid_token" ||
       code === "invalid_token" ||
-      /invalid token|token expired|unauthorized|forbidden/i.test(message)
-    );
-  }
-
-  if (error instanceof Error) {
-    return /invalid token|token expired|unauthorized|forbidden/i.test(
-      error.message,
+      /invalid token|token expired|session expired or revoked/i.test(message)
     );
   }
 
@@ -184,16 +210,32 @@ export function AuthProvider({ children }: PropsWithChildren) {
         return;
       }
 
-      const currentUser = await queryClient.fetchQuery({
-        queryKey: queryKeys.auth.me,
-        queryFn: getCurrentUser,
-      });
-
-      setUser(currentUser);
+      // A stored access token is enough to unblock routing. Validation happens
+      // immediately, but a slow/offline backend must not turn a cold start into
+      // a logout.
       setStatus("authenticated");
+      try {
+        const currentUser = await withTimeout(
+          queryClient.fetchQuery({
+            queryKey: queryKeys.auth.me,
+            queryFn: getCurrentUser,
+          }),
+          HYDRATE_REQUEST_TIMEOUT_MS,
+        );
+        setUser(currentUser);
+      } catch (error) {
+        if (isInvalidSessionError(error)) {
+          await clearSession("Your session expired. Please log in again.", {
+            navigate: true,
+          });
+          return;
+        }
+        if (__DEV__) console.warn("Auth validation deferred", error);
+      }
     } catch (error) {
       if (isQueryCancellation(error)) {
-        setStatus("unauthenticated");
+        const { accessToken } = await getStoredTokens();
+        setStatus(accessToken ? "authenticated" : "unauthenticated");
         return;
       }
 
@@ -201,6 +243,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
         await clearSession("Your session expired. Please log in again.", {
           navigate: true,
         });
+        return;
+      }
+
+      const { accessToken } = await getStoredTokens();
+      if (accessToken) {
+        setStatus("authenticated");
+        if (__DEV__) console.warn("Auth hydration deferred", error);
         return;
       }
 
@@ -293,6 +342,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       setStatus("authenticated");
       return currentUser;
     } catch (error) {
+      if (isTransientAuthError(error)) throw error;
       if (isInvalidSessionError(error)) {
         await signOut("Your session expired. Please log in again.");
         return null;

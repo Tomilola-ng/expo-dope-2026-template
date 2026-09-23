@@ -104,6 +104,9 @@ export function getApiConfig() {
       verifyOtp: ensureLeadingSlash(process.env.EXPO_PUBLIC_AUTH_VERIFY_OTP_PATH?.trim() || "/auth/verify-otp"),
       me: ensureLeadingSlash(process.env.EXPO_PUBLIC_AUTH_ME_PATH?.trim() || "/auth/me"),
       logout: ensureLeadingSlash(process.env.EXPO_PUBLIC_AUTH_LOGOUT_PATH?.trim() || "/auth/logout"),
+      refresh: ensureLeadingSlash(
+        process.env.EXPO_PUBLIC_AUTH_REFRESH_PATH?.trim() || "/auth/refresh-token",
+      ),
       forgotPassword: ensureLeadingSlash(process.env.EXPO_PUBLIC_AUTH_FORGOT_PASSWORD_PATH?.trim() || "/auth/forgot-password"),
     },
     tokenPrefix: (process.env.EXPO_PUBLIC_AUTH_TOKEN_PREFIX?.trim() || "Bearer"),

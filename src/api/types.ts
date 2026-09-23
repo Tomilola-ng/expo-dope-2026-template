@@ -5,7 +5,8 @@ export type ApiEnvelope<T> = {
   message?: string;
   data: T;
   errors?: Record<string, string[] | string>;
-  detail?: string | string[];
+  detail?: string | string[] | { message?: string; code?: string };
+  code?: string;
 };
 
 export type ApiFieldErrors = Record<string, string[]>;
@@ -157,6 +158,10 @@ export type RequestOptions = {
   auth?: boolean;
   headers?: Record<string, string>;
   signal?: AbortSignal;
+  /** Per-request timeout. Set to 0 to opt out. */
+  timeoutMs?: number;
+  /** @internal Guards the single refresh-and-retry cycle. */
+  _retriedAfterRefresh?: boolean;
 };
 
 export type UploadRequestOptions = Omit<RequestOptions, "body" | "headers"> & {

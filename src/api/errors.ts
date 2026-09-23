@@ -3,6 +3,8 @@ import type { ApiFieldErrors } from "@/api/types";
 export class ApiError extends Error {
   status: number;
   code: "network" | "config" | "http";
+  /** Optional machine-readable error returned by the backend. */
+  apiCode?: string;
   fieldErrors?: ApiFieldErrors;
   retryAfter?: number;
 
@@ -10,6 +12,7 @@ export class ApiError extends Error {
     message: string;
     status: number;
     code?: "network" | "config" | "http";
+    apiCode?: string;
     fieldErrors?: ApiFieldErrors;
     retryAfter?: number;
   }) {
@@ -17,6 +20,7 @@ export class ApiError extends Error {
     this.name = "ApiError";
     this.status = params.status;
     this.code = params.code || "http";
+    this.apiCode = params.apiCode;
     this.fieldErrors = params.fieldErrors;
     this.retryAfter = params.retryAfter;
   }
