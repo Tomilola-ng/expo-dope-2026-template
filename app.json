@@ -85,7 +85,6 @@
     "android": {
       "package": "com.example.myapp",
       "versionCode": 1,
-      "usesCleartextTraffic": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/adaptive-icon-foreground.png",
         "backgroundImage": "./assets/icons/adaptive-icon-background.png",
